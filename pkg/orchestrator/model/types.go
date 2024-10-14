@@ -8,9 +8,8 @@ package orchestrator
 import (
 	"strings"
 
-	"github.com/patrickmn/go-cache"
-
 	"github.com/DataDog/datadog-agent/pkg/util/log"
+	"github.com/patrickmn/go-cache"
 )
 
 // NodeType represents a kind of resource used by a container orchestrator.
@@ -83,6 +82,8 @@ const (
 	K8sLimitRange = 25
 	// K8sStorageClass represents a Kubernetes StorageClass
 	K8sStorageClass = 26
+	// K8sPodDisruptionBudget represents a Kubernetes PodDisruptionBudget
+	K8sPodDisruptionBudget = 27
 	// ECSTask represents an ECS Task
 	ECSTask = 150
 )
