@@ -130,7 +130,10 @@ func (h *autoscalersController) enableWPA(wpaInformerFactory dynamic_informer.Dy
 
 	genericInformer := wpaInformerFactory.ForResource(gvrWPA)
 
-	h.wpaQueue = workqueue.NewNamedRateLimitingQueue(workqueue.DefaultItemBasedRateLimiter(), "wpa-autoscalers")
+	h.wpaQueue = workqueue.NewTypedRateLimitingQueueWithConfig(
+		workqueue.DefaultTypedItemBasedRateLimiter[string](),
+		workqueue.TypedRateLimitingQueueConfig[string]{Name: "wpa-autoscalers"},
+	)
 	h.wpaLister = genericInformer.Lister()
 	h.wpaListerSynced = genericInformer.Informer().HasSynced
 	if _, err := genericInformer.Informer().AddEventHandler(

@@ -132,7 +132,7 @@ func labelConflictSuffix(label string, count int) string {
 // createPrometheusLabelKeysValues takes in passed kubernetes annotations/labels
 // and associated allowed list in kubernetes label format.
 // It returns only those allowed annotations/labels that exist in the list and converts them to Prometheus labels.
-func createPrometheusLabelKeysValues(prefix string, allKubeData map[string]string /*, allowList []string*/) ([]string, []string) {
+func createPrometheusLabelKeysValues(prefix string /* allKubeData */, _ map[string]string /*, allowList []string*/) ([]string, []string) {
 	allowedKubeData := make(map[string]string)
 
 	// if len(allowList) > 0 {

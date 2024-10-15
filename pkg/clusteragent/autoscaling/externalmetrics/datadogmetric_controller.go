@@ -48,7 +48,7 @@ type DatadogMetricController struct {
 	clientSet dynamic.Interface
 	lister    cache.GenericLister
 	synced    cache.InformerSynced
-	workqueue workqueue.RateLimitingInterface
+	workqueue workqueue.TypedRateLimitingInterface[string]
 	store     *DatadogMetricsInternalStore
 	isLeader  func() bool
 	context   context.Context
@@ -65,9 +65,12 @@ func NewDatadogMetricController(client dynamic.Interface, informer dynamicinform
 		clientSet: client,
 		lister:    datadogMetricsInformer.Lister(),
 		synced:    datadogMetricsInformer.Informer().HasSynced,
-		workqueue: workqueue.NewNamedRateLimitingQueue(workqueue.DefaultItemBasedRateLimiter(), "datadogmetrics"),
-		store:     store,
-		isLeader:  isLeader,
+		workqueue: workqueue.NewTypedRateLimitingQueueWithConfig(
+			workqueue.DefaultTypedItemBasedRateLimiter[string](),
+			workqueue.TypedRateLimitingQueueConfig[string]{Name: "datadogmetrics"},
+		),
+		store:    store,
+		isLeader: isLeader,
 	}
 
 	if _, err := datadogMetricsInformer.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{

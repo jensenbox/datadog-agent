@@ -90,9 +90,9 @@ func newController(
 		localSender:   localSender,
 	}
 
-	autoscalingWorkqueue := workqueue.NewRateLimitingQueueWithConfig(
-		workqueue.DefaultItemBasedRateLimiter(),
-		workqueue.RateLimitingQueueConfig{
+	autoscalingWorkqueue := workqueue.NewTypedRateLimitingQueueWithConfig(
+		workqueue.DefaultTypedItemBasedRateLimiter[string](),
+		workqueue.TypedRateLimitingQueueConfig[string]{
 			Name:            subsystem,
 			MetricsProvider: autoscalingQueueMetricsProvider,
 		},

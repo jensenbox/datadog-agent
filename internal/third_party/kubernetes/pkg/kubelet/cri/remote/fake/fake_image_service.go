@@ -77,5 +77,5 @@ func (f *RemoteRuntime) ImageFsInfo(ctx context.Context, _ *kubeapi.ImageFsInfoR
 		return nil, err
 	}
 
-	return &kubeapi.ImageFsInfoResponse{ImageFilesystems: fsUsage}, nil
+	return &kubeapi.ImageFsInfoResponse{ImageFilesystems: fsUsage.ImageFilesystems}, nil
 }

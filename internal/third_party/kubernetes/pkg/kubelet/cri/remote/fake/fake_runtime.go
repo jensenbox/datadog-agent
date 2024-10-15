@@ -336,3 +336,30 @@ func (f *RemoteRuntime) CheckpointContainer(ctx context.Context, _ *kubeapi.Chec
 func (f *RemoteRuntime) GetContainerEvents(_ *kubeapi.GetEventsRequest, _ kubeapi.RuntimeService_GetContainerEventsServer) error {
 	return nil
 }
+
+func (f *RemoteRuntime) ListMetricDescriptors(ctx context.Context, _ *kubeapi.ListMetricDescriptorsRequest) (*kubeapi.ListMetricDescriptorsResponse, error) {
+	resp, err := f.RuntimeService.ListMetricDescriptors(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &kubeapi.ListMetricDescriptorsResponse{Descriptors: resp}, nil
+}
+
+func (f *RemoteRuntime) ListPodSandboxMetrics(ctx context.Context, _ *kubeapi.ListPodSandboxMetricsRequest) (*kubeapi.ListPodSandboxMetricsResponse, error) {
+	resp, err := f.RuntimeService.ListPodSandboxMetrics(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &kubeapi.ListPodSandboxMetricsResponse{PodMetrics: resp}, nil
+}
+
+func (f *RemoteRuntime) RuntimeConfig(ctx context.Context, _ *kubeapi.RuntimeConfigRequest) (*kubeapi.RuntimeConfigResponse, error) {
+	resp, err := f.RuntimeService.RuntimeConfig(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return &kubeapi.RuntimeConfigResponse{Linux: resp.Linux}, nil
+}
