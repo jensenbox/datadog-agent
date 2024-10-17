@@ -1,7 +1,5 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/DataDog/datadog-agent v0.0.0-20241016195210-abaca877ff92 h1:yxNhI3dWC2PLG3eig+AkSlAk7ghDWWYCls2j6N6gWfA=
-github.com/DataDog/datadog-agent v0.0.0-20241016195210-abaca877ff92/go.mod h1:V4Gcpr6u53G9pWFw3hc+2HypZD+9C2Uds0ZgcEF2zC8=
 github.com/DataDog/datadog-agent/pkg/api v0.57.1 h1:gU0eR9hyYyTpfoRsWxRyM0YBvRUIX6eUoiHD1spi7vI=
 github.com/DataDog/datadog-agent/pkg/api v0.57.1/go.mod h1:6cRkdpLIq0AnEZ8+x4ybk+QtDWAYFBrTqswgahUg6bE=
 github.com/DataDog/datadog-agent/pkg/errors v0.56.0-rc.3 h1:0mOapA8Da82jFkYDoKgp6Vt8eqcmPxEPG8ABByNGpyc=

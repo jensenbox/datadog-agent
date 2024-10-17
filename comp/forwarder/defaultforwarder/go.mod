@@ -51,7 +51,6 @@ replace (
 )
 
 require (
-	github.com/DataDog/datadog-agent v0.0.0-20241016195210-abaca877ff92
 	github.com/DataDog/datadog-agent/comp/core/config v0.57.1
 	github.com/DataDog/datadog-agent/comp/core/log/def v0.58.0-devel
 	github.com/DataDog/datadog-agent/comp/core/log/mock v0.58.0-devel
