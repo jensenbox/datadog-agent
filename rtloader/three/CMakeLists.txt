@@ -6,7 +6,7 @@ project(datadog-agent-three VERSION 0.1.0 DESCRIPTION "CPython backend for the D
 # Compose Python3_STDLIB ourselves in order to have a correct value for _defaultPythonHome:
 # cmake sets it to the value of sysconfig.get_path('stdlib')
 # Which python defines as prefix/lib/pythonX.Y or prefix\Lib on windows
-if (!WIN32)
+if (NOT WIN32)
   set(Python3_STDLIB "${Python3_PREFIX}/lib/python${Python3_VERSION}")
 else()
   set(Python3_STDLIB "${Python3_PREFIX}\\Lib")
