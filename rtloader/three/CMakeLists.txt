@@ -66,6 +66,7 @@ message(INFO "Linking datadog-agent-three with ${Python3_LIBRARIES}")
 message(INFO "Python3_LIBRARY_DIRS: ${Python3_LIBRARY_DIRS}")
 message(INFO "Python3_LDFLAGS: ${Python3_LDFLAGS}")
 message(INFO "Python3_LDFLAGS_OTHER: ${Python3_LDFLAGS_OTHER}")
+target_link_directories(datadog-agent-three ${Python3_LIBRARY_DIRS})
 target_link_libraries(datadog-agent-three ${Python3_LIBRARIES} datadog-agent-rtloader)
 
 if(WIN32)
