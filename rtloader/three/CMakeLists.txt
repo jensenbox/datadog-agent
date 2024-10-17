@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.12)
-pkg_check_modules(Python3 REQUIRED "python3 >= 3.11")
+pkg_check_modules(Python3 REQUIRED "python3-embed >= 3.11")
 
 project(datadog-agent-three VERSION 0.1.0 DESCRIPTION "CPython backend for the Datadog Agent")
 
