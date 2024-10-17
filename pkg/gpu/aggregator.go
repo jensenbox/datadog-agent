@@ -25,10 +25,10 @@ type aggregator struct {
 	measuredIntervalNs int64
 
 	// currentAllocs is the list of current memory allocations
-	currentAllocs []*model.MemoryAllocation
+	currentAllocs []*memoryAllocation
 
 	// pastAllocs is the list of past memory allocations
-	pastAllocs []*model.MemoryAllocation
+	pastAllocs []*memoryAllocation
 
 	// lastKernelEndKtime is the timestamp of the last kernel end
 	lastKernelEndKtime int64
@@ -57,12 +57,12 @@ func newAggregator(sysCtx *systemContext) *aggregator {
 }
 
 // processKernelSpan processes a kernel span
-func (agg *aggregator) processKernelSpan(span *model.KernelSpan) {
-	tsStart := int64(span.StartKtime)
-	tsEnd := int64(span.EndKtime)
+func (agg *aggregator) processKernelSpan(span *kernelSpan) {
+	tsStart := int64(span.startKtime)
+	tsEnd := int64(span.endKtime)
 
 	if agg.firstKernelStartKtime == 0 || tsStart < agg.firstKernelStartKtime {
-		agg.firstKernelStartKtime = int64(span.EndKtime)
+		agg.firstKernelStartKtime = int64(span.endKtime)
 	}
 
 	// we only want to consider data that was not already processed in the previous interval
@@ -72,28 +72,28 @@ func (agg *aggregator) processKernelSpan(span *model.KernelSpan) {
 
 	durationSec := float64(tsEnd-tsStart) / nsecPerSec
 	maxThreads := uint64(agg.sysCtx.maxGpuThreadsPerDevice[0])                                // TODO: MultiGPU support not enabled yet
-	agg.totalThreadSecondsUsed += durationSec * float64(min(span.AvgThreadCount, maxThreads)) // we can't use more threads than the GPU has
+	agg.totalThreadSecondsUsed += durationSec * float64(min(span.avgThreadCount, maxThreads)) // we can't use more threads than the GPU has
 
 	if tsEnd > agg.lastKernelEndKtime {
 		agg.lastKernelEndKtime = tsEnd
 	}
 }
 
-func (agg *aggregator) processPastData(data *model.StreamData) {
-	for _, span := range data.Spans {
+func (agg *aggregator) processPastData(data *streamData) {
+	for _, span := range data.spans {
 		agg.processKernelSpan(span)
 	}
 
-	agg.pastAllocs = append(agg.pastAllocs, data.Allocations...)
+	agg.pastAllocs = append(agg.pastAllocs, data.allocations...)
 	agg.hasPendingData = true
 }
 
-func (agg *aggregator) processCurrentData(data *model.StreamData) {
-	for _, span := range data.Spans {
+func (agg *aggregator) processCurrentData(data *streamData) {
+	for _, span := range data.spans {
 		agg.processKernelSpan(span)
 	}
 
-	agg.currentAllocs = append(agg.currentAllocs, data.Allocations...)
+	agg.currentAllocs = append(agg.currentAllocs, data.allocations...)
 	agg.hasPendingData = true
 }
 
@@ -122,11 +122,11 @@ func (agg *aggregator) getStats() model.PIDStats {
 	var memTsBuilder tseriesBuilder
 
 	for _, alloc := range agg.currentAllocs {
-		memTsBuilder.AddEventStart(alloc.StartKtime, int64(alloc.Size))
+		memTsBuilder.AddEventStart(alloc.startKtime, int64(alloc.size))
 	}
 
 	for _, alloc := range agg.pastAllocs {
-		memTsBuilder.AddEvent(alloc.StartKtime, alloc.EndKtime, int64(alloc.Size))
+		memTsBuilder.AddEvent(alloc.startKtime, alloc.endKtime, int64(alloc.size))
 	}
 
 	lastValue, maxValue := memTsBuilder.GetLastAndMax()
